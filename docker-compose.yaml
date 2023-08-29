@@ -1,0 +1,28 @@
+version: "3.7"
+services:
+  prom-pushgateway:
+    image: prom/pushgateway
+    ports:
+      - 9091:9091
+    networks: [prometheus-network]
+  prometheus:
+    image: prom/prometheus:v2.37.0
+    volumes:
+      - ~/grafana-issue-69701/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+    networks: [prometheus-network]
+  grafana:
+    image: grafana/grafana:10.1.0
+    volumes:
+      - ~/grafana-issue-69701/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ~/grafana-issue-69701/grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+      - ~/grafana-issue-69701/grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/default.yaml
+      - ~/grafana-issue-69701/grafana/dashboard.json:/var/lib/grafana/dashboards/dashboard.json
+    ports:
+      - 3000:3000
+    networks: [prometheus-network]
+    links:
+      - prometheus
+networks:
+  prometheus-network:

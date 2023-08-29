@@ -1,0 +1,13 @@
+grafana issue 69701 Minimal example
+
+How to :
+
+> docker compose up -d
+> ./push_data.sh
+
+go to http://localhost:3000 login admin, password admin
+got to Dashboards > Services > Test
+
+The Test dashboard has two pannels: one working, one broken.
+The working one aggregate two queries while the broken one try to aggregate three queries (the third one returning an empty result)
+
